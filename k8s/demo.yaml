@@ -27,7 +27,7 @@ spec:
       - name: CONSUL_HOST
         value: "192.168.1.45"
       - name: CONSUL_PORT
-        value: 80
+        value: "80"
     volumeMounts:
     - name: shared-data
       mountPath: /app/servlet/logs
@@ -90,7 +90,7 @@ spec:
       - name: CONSUL_HOST
         value: "192.168.1.45"
       - name: CONSUL_PORT
-        value: 80
+        value: "80"
     volumeMounts:
     - name: shared-data
       mountPath: /app/servlet/logs
@@ -154,7 +154,7 @@ spec:
       - name: CONSUL_HOST
         value: "192.168.1.45"
       - name: CONSUL_PORT
-        value: 80
+        value: "80"
     volumeMounts:
     - name: shared-data
       mountPath: /app/servlet/logs
@@ -213,11 +213,11 @@ spec:
     imagePullPolicy: Always
     env:
       - name: RUN_ARGS
-        value: "--server.port=0 --spring.cloud.consul.discovery.heartbeat.ttlValue=60"
+        value: "--spring.cloud.consul.discovery.heartbeat.ttlValue=60"
       - name: CONSUL_HOST
         value: "192.168.1.45"
       - name: CONSUL_PORT
-        value: 80
+        value: "80"
     volumeMounts:
     - name: shared-data
       mountPath: /app/servlet/logs
