@@ -56,11 +56,11 @@
 			<artifactId>joda-time</artifactId>
 		</dependency>
 
-		<!-- 使用TSF分布式配置时请启用 -->
+		<!-- 使用TSF分布式配置时请启用
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-consul-config</artifactId>
-		</dependency>
+		</dependency>-->
 
 		<!-- 使用TSF链路跟踪时请启用 -->
 		<dependency>

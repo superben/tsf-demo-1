@@ -1,6 +1,10 @@
 server:
   port: 10101
 
+management:
+  security:
+    enabled: false
+
 spring:
   cloud:
     consul:
@@ -13,9 +17,9 @@ spring:
           ttlValue: 60
           ttlUnit: s
       config:
-        enable: true
-        profileSeparator: /
-        format: yaml
+        enable: false
+#        profileSeparator: /
+#        format: yaml
 
 logging:
   level:
