@@ -1,0 +1,81 @@
+<html>
+
+<head>
+	<meta http-equiv="Access-Control-Allow-Origin" content="*" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script src='lib/jquery-3.3.1.min.js'></script>
+	<script>
+		// 查询产品（单条）
+		function findPorductOne() {
+			$.ajax({
+				type: "get",
+				datatype: "json",
+				url: "product/" + $("#queryProductId").val(),
+				success: function (data) {
+					var row = "<tr><td>" + data.productId +
+						"</td><td>" + data.productName + "</td></tr>";
+					$("#prouduct").html(getProductTH() + row);
+				}
+			});
+		}
+
+		// 查询产品（列表）
+		function findProductList() {
+			$.ajax({
+				type: "get",
+				datatype: "json",
+				url: "product/list",
+				success: function (data) {
+					var rows = "";
+					for (var i = 0; i < data.length; i++) {
+						rows += "<tr><td>" + data[i].productId +
+							"</td><td>" + data[i].productName + "</td></tr>";
+					}
+					$("#prouductList").html(getProductTH() + rows);
+				}
+			});
+		}
+
+		//获取产品表头
+		function getProductTH() {
+			return "<tr><td>产品ID</td><td>产品名称</td></tr>";
+		}
+
+		function reload() {
+			findProductList();
+		}
+	</script>
+	<style>
+		table {
+			border: 1px solid #999;
+			white-space: nowrap;
+			border-spacing: 0;
+		}
+
+		td {
+			white-space: nowrap;
+			border-spacing: 0;
+			border: 1px solid #999;
+			padding: 0px 10px;
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body onload='reload()'>
+	<a href='index.html'>&lt;返回</a>
+	<h1>TSF Product 产品</h1>
+	<div>
+		<h3>产品查询（单条）</h3>
+		Product ID:
+		<input type='text' id='queryProductId' value='product-7' />
+		<input type='button' value='查询' onclick='findPorductOne()' />
+		<table id='prouduct'> </table>
+	</div>
+	<div>
+		<h3>产品查询（列表）</h3>
+		<table id='prouductList'> </table>
+	</div>
+</body>
+
+</html>

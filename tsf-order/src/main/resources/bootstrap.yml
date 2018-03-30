@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: tsf-order
+
+#  profiles:
+#    active: ${tsf.app_id}/${tsf.group_id}

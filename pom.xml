@@ -1,0 +1,109 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.10.RELEASE</version>
+	</parent>
+
+	<groupId>com.tencent.tsf</groupId>
+	<artifactId>tsf-demo-parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>tsf</name>
+	<description>Demo projects for TSF(Tencent Service Framework).</description>
+	<packaging>pom</packaging>
+
+	<properties>
+		<!-- 基本配置 -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+
+		<!-- TSF框架 -->
+		<spring-cloud-tsf.version>0.0.1-SNAPSHOT</spring-cloud-tsf.version>
+
+		<!-- 第三方引入版本号 -->
+		<commons-lang3.version>3.6</commons-lang3.version>
+		<commons-io.version>2.5</commons-io.version>
+		<jackson-databind.version>2.8.11</jackson-databind.version>
+		<joda-time.version>2.7</joda-time.version>
+		<log4j-api.version>2.8.2</log4j-api.version>
+		<log4j-core.version>2.8.2</log4j-core.version>
+		<spring-cloud-dependencies.version>Edgware.SR2</spring-cloud-dependencies.version>
+	</properties>
+
+	<modules>
+		<!-- 订单 -->
+		<module>tsf-order</module>
+		<!-- 产品 -->
+		<module>tsf-product</module>
+		<!-- 库存 -->
+		<module>tsf-inventory</module>
+		<module>tsf-demo-front</module>
+	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- spring-cloud-dependencies -->
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud-dependencies.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- commons io -->
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>${commons-io.version}</version>
+			</dependency>
+
+			<!-- commons-lang3 -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${commons-lang3.version}</version>
+			</dependency>
+
+			<!-- jackson-databind 升级到没有漏洞的版本 -->
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson-databind.version}</version>
+			</dependency>
+
+			<!-- joda-time 解决版本冲突 -->
+			<dependency>
+				<groupId>joda-time</groupId>
+				<artifactId>joda-time</artifactId>
+				<version>${joda-time.version}</version>
+			</dependency>
+
+			<!-- TSF链路跟踪 -->
+			<dependency>
+				<groupId>com.tencent.tsf</groupId>
+				<artifactId>spring-cloud-tsf-sleuth</artifactId>
+				<version>${spring-cloud-tsf.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<!-- 启用Tencent私库的snapshot
+	<repositories>
+		<repository>
+			<id>TencentMVN</id>
+			<name>TencentMVN</name>
+			<url>http://maven.oa.com/nexus/content/groups/public/</url>
+			<releases>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+-->
+</project>

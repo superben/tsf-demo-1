@@ -1,0 +1,256 @@
+<html>
+
+<head>
+	<meta http-equiv="Access-Control-Allow-Origin" content="*" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script src='lib/jquery-3.3.1.min.js'></script>
+	<script>
+		// 销售
+		function sales() {
+			$.ajax({
+				type: "post",
+				url: "order/sales",
+				contentType: 'application/json',
+				data: JSON.stringify({
+					productId: $("#salesProductID").val(),
+					quantity: $("#salesQuantity").val()
+				}),
+				success: function (data) {
+					reset();
+					$("#salesResult").html(data + '');
+					reload();
+				}
+			});
+		}
+
+		// 补货
+		function supply() {
+			$.ajax({
+				type: "post",
+				url: "order/supply",
+				contentType: 'application/json',
+				data: JSON.stringify({
+					productId: $("#supplyProductID").val(),
+					quantity: $("#supplyQuantity").val()
+				}),
+				success: function (data) {
+					reset();
+					$("#supplyResult").html(data + '');
+					reload();
+				}
+			});
+		}
+		// 查询订单（单条）
+		function findOrderOne() {
+			$.ajax({
+				type: "get",
+				datatype: "json",
+				url: "order/" + $("#queryOrderID").val(),
+				success: function (data) {
+					var row = "<tr><td>" + data.orderId +
+						"</td><td>" + data.orderType +
+						"</td><td>" + data.productId +
+						"</td><td>" + data.productName +
+						"</td><td>" + data.quantity + "</td></tr>";
+					$("#order").html(getOrderTH() + row);
+				}
+			});
+		}
+		// 查询订单（列表）
+		function findOrderList() {
+			$.ajax({
+				type: "get",
+				datatype: "json",
+				url: "order/list",
+				success: function (data) {
+					var rows = "";
+					for (var i = 0; i < data.length; i++) {
+						rows += "<tr><td>" + data[i].orderId +
+							"</td><td>" + data[i].orderType +
+							"</td><td>" + data[i].productId +
+							"</td><td>" + data[i].productName +
+							"</td><td>" + data[i].quantity + "</td></tr>";
+					}
+					$("#orderList").html(getOrderTH() + rows);
+				}
+			});
+		}
+
+		//获取订单表头
+		function getOrderTH() {
+			return "<tr><td>订单ID</td><td>订单类型</td><td>产品ID</td><td>产品名称</td><td>订单数量</td></tr>";
+		}
+
+		// 入库
+		function inbound() {
+			$.ajax({
+				type: "post",
+				url: "inventory/inbound",
+				contentType: 'application/json',
+				data: JSON.stringify({
+					productId: $("#inboundProductID").val(),
+					quantity: $("#inboundQuantity").val()
+				}),
+				success: function (data) {
+					reset();
+					$("#inboundResult").html(data + '');
+					findInventoryList();
+				}
+			});
+		}
+
+		// 出库
+		function outbound() {
+			$.ajax({
+				type: "post",
+				url: "inventory/outbound",
+				contentType: 'application/json',
+				data: JSON.stringify({
+					productId: $("#outboundProductID").val(),
+					quantity: $("#outboundQuantity").val()
+				}),
+				success: function (data) {
+					reset();
+					$("#outboundResult").html(data + '');
+					findInventoryList();
+				}
+			});
+		}
+
+		// 查询库存（单条）
+		function findInventoryOne() {
+			$.ajax({
+				type: "get",
+				datatype: "json",
+				url: "inventory/" + $("#queryInventoryProductID").val(),
+				success: function (data) {
+					var row = "<tr><td>" + data.productId +
+						"</td><td>" + data.productName +
+						"</td><td>" + data.quantity + "</td></tr>";
+					$("#inventory").html(getInventoryTH() + row);
+				}
+			});
+		}
+
+		// 查询库存（列表）
+		function findInventoryList() {
+			$.ajax({
+				type: "get",
+				datatype: "json",
+				url: "inventory/list",
+				success: function (data) {
+					var rows = "";
+					for (var i = 0; i < data.length; i++) {
+						rows += "<tr><td>" + data[i].productId +
+							"</td><td>" + data[i].productName +
+							"</td><td>" + data[i].quantity + "</td></tr>";
+					}
+					$("#inventoryList").html(getInventoryTH() + rows);
+				}
+			});
+		}
+
+		//获取库存表头
+		function getInventoryTH() {
+			return "<tr><td>产品ID</td><td>产品名称</td><td>库存数量</td></tr>";
+		}
+
+		// 查询两个列表
+		function reload() {
+			findOrderList();
+			findInventoryList();
+		}
+
+		// 清空结果显示
+		function reset() {
+			$("#salesResult").html(null);
+			$("#supplyResult").html(null);
+			$("#inboundResult").html(null);
+			$("#outboundResult").html(null);
+		}
+	</script>
+	<style>
+		table {
+			border: 1px solid #999;
+			white-space: nowrap;
+			border-spacing: 0;
+		}
+
+		td {
+			white-space: nowrap;
+			border-spacing: 0;
+			border: 1px solid #999;
+			padding: 0px 10px;
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body onload="reload()">
+	<div style='width: 100%; float: left;'>
+		<a href='index.html'>&lt;返回</a>
+	</div>
+	<div style='width: 50%; float: left; text-align: left;'>
+		<h1>TSF Order 订单</h1>
+		<div>
+			<h3>销售</h3>
+			Product ID:
+			<input type='text' id='salesProductID' value='product-7' /> Quantity:
+			<input type='text' id='salesQuantity' value='10' />
+			<input type='button' value='下单' onclick='sales()'>
+			<span id='salesResult'></span>
+		</div>
+		<div>
+			<h3>补货</h3>
+			Product ID:
+			<input type='text' id='supplyProductID' value='product-7' /> Quantity:
+			<input type='text' id='supplyQuantity' value='10' />
+			<input type='button' value='下单' onclick='supply()'>
+			<span id='supplyResult'></span>
+		</div>
+		<div>
+			<h3>订单查询（单条）</h3>
+			Order ID:
+			<input type='text' id='queryOrderID' value='order-7' />
+			<input type='button' value='查询' onclick='findOrderOne()'>
+			<table id="order">
+			</table>
+		</div>
+		<div>
+			<h3>订单查询（列表）</h3>
+			<table id="orderList"> </table>
+		</div>
+	</div>
+	<div style='width: 50%; float: right; text-align: left;'>
+		<h1>TSF Inventory 库存</h1>
+		<div>
+			<h3>入库</h3>
+			Product ID:
+			<input type='text' id='inboundProductID' value='product-7' /> Quantity:
+			<input type='text' id='inboundQuantity' value='10' />
+			<input type='button' value='入库' onclick='inbound()'>
+			<span id='inboundResult'></span>
+		</div>
+		<div>
+			<h3>出库</h3>
+			Product ID:
+			<input type='text' id='outboundProductID' value='product-7' /> Quantity:
+			<input type='text' id='outboundQuantity' value='10' />
+			<input type='button' value='出库' onclick='outbound()'>
+			<span id='outboundResult'></span>
+		</div>
+		<div>
+			<h3>库存查询（单条）</h3>
+			Product ID:
+			<input type='text' id='queryInventoryProductID' value='product-7' />
+			<input type='button' value='查询' onclick='findInventoryOne()'>
+			<table id="inventory"></table>
+		</div>
+		<div>
+			<h3>库存查询（列表）</h3>
+			<table id="inventoryList"></table>
+		</div>
+	</div>
+</body>
+
+</html>

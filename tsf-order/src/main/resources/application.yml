@@ -1,0 +1,27 @@
+server:
+  port: 10101
+
+spring:
+  cloud:
+    consul:
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
+      discovery:
+        preferIpAddress: true
+        heartbeat:
+          enabled: true
+          ttlValue: 60
+          ttlUnit: s
+      config:
+        enable: true
+        profileSeparator: /
+        format: yaml
+
+logging:
+  level:
+    ROOT: INFO
+    org.springframework.cloud.sleuth.log: TRACE
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
+    org.springframework.cloud.consul: TRACE
+
+  file: /var/log/tsf/demo/${spring.application.name}.log

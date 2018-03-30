@@ -1,0 +1,53 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    consul:
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
+      discovery:
+        preferIpAddress: true
+        heartbeat:
+          enabled: true
+          ttlValue: 60
+          ttlUnit: s
+      config:
+        enable: true
+        profileSeparator: /
+        format: yaml
+
+logging:
+  level:
+    ROOT: INFO
+    org.springframework.cloud.sleuth.log: TRACE
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
+    org.springframework.cloud.consul: TRACE
+
+  file: /var/log/tsf/demo/${spring.application.name}.log
+
+zuul:
+  ignoredServices: '*'
+  host:
+    connect-timeout-millis: 20000
+    socket-timeout-millis: 20000
+
+  routes:
+    auth-service:
+        path: /inventory/**
+        serviceId: tsf-inventory
+        stripPrefix: false
+#        sensitiveHeaders:
+
+    account-service:
+        path: /order/**
+        serviceId: tsf-order
+        stripPrefix: false
+        sensitiveHeaders:
+
+    statistics-service:
+        path: /product/**
+        serviceId: tsf-product
+        stripPrefix: false
+        sensitiveHeaders:
+

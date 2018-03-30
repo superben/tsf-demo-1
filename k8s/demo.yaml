@@ -1,0 +1,254 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tsf-product
+spec:
+
+  restartPolicy: Never
+
+  volumes:
+  - name: shared-data
+    emptyDir: {}
+  - name: log-data
+    persistentVolumeClaim:
+      claimName: tsf-pvc
+
+  nodeSelector:
+    nodename: slave
+
+  containers:
+
+  - name: product
+    image: 172.16.0.32:60080/tsf/tsf-product
+    imagePullPolicy: Always
+    env:
+      - name: RUN_ARGS
+        value: "--server.port=0"
+      - name: CONSUL_HOST
+        value: "192.168.1.45"
+      - name: CONSUL_PORT
+        value: 80
+    volumeMounts:
+    - name: shared-data
+      mountPath: /app/servlet/logs
+    - name: log-data
+      mountPath: /var/log/tsf/demo
+
+  - name: filebeat
+    image: 172.16.0.32:60080/tsf/agent
+    imagePullPolicy: Always
+    env:
+      - name: INSTANCE_ID
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: LOCAL_IP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.podIP
+      - name: APP_ID
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: NAMESPACE_ID
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.namespace
+      - name: ES_HOSTS
+        value: "'192.168.1.37:9200','192.168.1.38:9200','192.168.1.40:9200'"
+    volumeMounts:
+    - name: shared-data
+      mountPath: /app/servlet/logs
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tsf-order
+spec:
+
+  restartPolicy: Never
+
+  volumes:
+  - name: shared-data
+    emptyDir: {}
+  - name: log-data
+    persistentVolumeClaim:
+      claimName: tsf-pvc
+
+  nodeSelector:
+    nodename: slave
+
+  containers:
+
+  - name: order
+    image: 172.16.0.32:60080/tsf/tsf-order
+    imagePullPolicy: Always
+    env:
+      - name: RUN_ARGS
+        value: "--server.port=0 --spring.cloud.consul.discovery.heartbeat.ttlValue=60"
+      - name: CONSUL_HOST
+        value: "192.168.1.45"
+      - name: CONSUL_PORT
+        value: 80
+    volumeMounts:
+    - name: shared-data
+      mountPath: /app/servlet/logs
+    - name: log-data
+      mountPath: /var/log/tsf/demo
+
+  - name: filebeat
+    image: 172.16.0.32:60080/tsf/agent
+    imagePullPolicy: Always
+    env:
+      - name: INSTANCE_ID
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: LOCAL_IP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.podIP
+      - name: APP_ID
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: NAMESPACE_ID
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.namespace
+      - name: ES_HOSTS
+        value: "'192.168.1.37:9200','192.168.1.38:9200','192.168.1.40:9200'"
+    volumeMounts:
+    - name: shared-data
+      mountPath: /app/servlet/logs
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tsf-inventory
+spec:
+
+  restartPolicy: Never
+
+  volumes:
+  - name: shared-data
+    emptyDir: {}
+  - name: log-data
+    persistentVolumeClaim:
+      claimName: tsf-pvc
+
+  nodeSelector:
+    nodename: slave
+
+  containers:
+
+  - name: inventory
+    image: 172.16.0.32:60080/tsf/tsf-inventory
+    imagePullPolicy: Always
+    env:
+      - name: RUN_ARGS
+        value: "--server.port=0 --spring.cloud.consul.discovery.heartbeat.ttlValue=60"
+      - name: CONSUL_HOST
+        value: "192.168.1.45"
+      - name: CONSUL_PORT
+        value: 80
+    volumeMounts:
+    - name: shared-data
+      mountPath: /app/servlet/logs
+    - name: log-data
+      mountPath: /var/log/tsf/demo
+
+  - name: filebeat
+    image: 172.16.0.32:60080/tsf/agent
+    imagePullPolicy: Always
+    env:
+      - name: INSTANCE_ID
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: LOCAL_IP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.podIP
+      - name: APP_ID
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: NAMESPACE_ID
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.namespace
+      - name: ES_HOSTS
+        value: "'192.168.1.37:9200','192.168.1.38:9200','192.168.1.40:9200'"
+    volumeMounts:
+    - name: shared-data
+      mountPath: /app/servlet/logs
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tsf-front
+spec:
+
+  restartPolicy: Never
+
+  volumes:
+  - name: shared-data
+    emptyDir: {}
+  - name: log-data
+    persistentVolumeClaim:
+      claimName: tsf-pvc
+
+  nodeSelector:
+    nodename: slave
+
+  containers:
+
+  - name: front
+    image: 172.16.0.32:60080/tsf/tsf-front
+    imagePullPolicy: Always
+    env:
+      - name: RUN_ARGS
+        value: "--server.port=0 --spring.cloud.consul.discovery.heartbeat.ttlValue=60"
+      - name: CONSUL_HOST
+        value: "192.168.1.45"
+      - name: CONSUL_PORT
+        value: 80
+    volumeMounts:
+    - name: shared-data
+      mountPath: /app/servlet/logs
+    - name: log-data
+      mountPath: /var/log/tsf/demo
+
+  - name: filebeat
+    image: 172.16.0.32:60080/tsf/agent
+    imagePullPolicy: Always
+    env:
+      - name: INSTANCE_ID
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: LOCAL_IP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.podIP
+      - name: APP_ID
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: NAMESPACE_ID
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.namespace
+      - name: ES_HOSTS
+        value: "'192.168.1.37:9200','192.168.1.38:9200','192.168.1.40:9200'"
+    volumeMounts:
+    - name: shared-data
+      mountPath: /app/servlet/logs
+
+---
+

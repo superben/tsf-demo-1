@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: tsf-front
+
+#  profiles:
+#    active: ${tsf.app_id}/${tsf.group_id}

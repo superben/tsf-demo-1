@@ -1,0 +1,43 @@
+======
+Notice:
+受限于金融专有云网络，以下API的需要登录到专有云的跳板机进行操作。
+
+======
+TSF Inventory
+入库
+curl -l -H "Content-type: application/json" -X POST -d '{"productId":"product-7","quantity":10}' http://10.0.1.118:10100/inventory/inbound
+出库
+curl -l -H "Content-type: application/json" -X POST -d '{"productId":"product-7","quantity":10}' http://10.0.1.118:10100/inventory/outbound
+库存查询（单条，最后一段是产品ID）
+curl http://10.0.1.118:10100/inventory/product-7
+库存查询（列表）
+curl http://10.0.1.118:10100/inventory/list
+======
+
+
+TSF Order
+销售
+curl -l -H "Content-type: application/json" -X POST -d '{"productId":"product-7","quantity":50}' http://10.0.1.117:10101/order/sales
+补货
+curl -l -H "Content-type: application/json" -X POST -d '{"productId":"product-7","quantity":50}' http://10.0.1.117:10101/order/supply
+订单查询（单条，最后一段是产品ID）
+curl http://10.0.1.117:10101/order/product-7
+订单查询（列表）
+curl http://10.0.1.117:10101/order/list
+======
+
+
+TSF Product
+产品查询（单条，最后一段是产品ID）
+curl http://10.0.1.119:10102/inventory/product-7
+产品查询（列表）
+curl http://10.0.1.119:10102/inventory/list
+======
+
+
+分布式配置：
+库存上限：配置于TSF Inventory应用
+tsf:
+  inventory:
+    maxInventory: 135
+======
