@@ -29,9 +29,9 @@ curl http://10.0.1.117:10101/order/list
 
 TSF Product
 产品查询（单条，最后一段是产品ID）
-curl http://10.0.1.119:10102/inventory/product-7
+curl http://10.0.1.119:10102/product/product-7
 产品查询（列表）
-curl http://10.0.1.119:10102/inventory/list
+curl http://10.0.1.119:10102/product/list
 ======
 
 
